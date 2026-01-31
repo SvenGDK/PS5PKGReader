@@ -65,7 +65,7 @@ namespace PS5PKGReader
                 }
             }
 
-            public static PS5Param? GetRetailPKGParamJSON(string pkgFilePath)
+            public static (PS5Param? ParamFile, string RawJSON) GetRetailPKGParamJSON(string pkgFilePath)
             {
                 var PKGParamBytes = GetRetailPKGParamBytes(pkgFilePath);
                 if (PKGParamBytes != null)
@@ -128,14 +128,17 @@ namespace PS5PKGReader
                         try
                         {
                             var ParamData = JsonConvert.DeserializeObject<PS5Param>(FinalParamJSONString);
-                            if (ParamData is not null) { return ParamData; }
-                            else { return null; }
+                            if (ParamData is not null)
+                            { 
+                                return (ParamData, FinalParamJSONString); 
+                            }
+                            else { return (null, ""); }
                         }
-                        catch { return null; }
+                        catch { return (null, ""); }
                     }
-                    else { return null; }
+                    else { return (null, ""); }
                 }
-                else { return null; }
+                else { return (null, ""); }
                 // A problem here is that the found offsets values are around the actual param.json because the PKG is not propperly read. However, with some fixes it will actually parse.
             }
 

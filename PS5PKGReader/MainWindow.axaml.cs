@@ -93,11 +93,14 @@ namespace PS5PKGReader
                 {
                     if (PKGType == PS5PKG.PKGType.Meta | PKGType == PS5PKG.PKGType.FullRetail)
                     {
-                        var ParamData = PS5PKG.GetRetailPKGParamJSON(selectedFile[0]);
+                        var (ParamData, RawParamData) = PS5PKG.GetRetailPKGParamJSON(selectedFile[0]);
                         var (PKGBackgrounds, PKGIcons) = PS5PKG.GetRetailPKGPNGs(selectedFile[0]);
 
-                        if (ParamData != null)
+                        if (ParamData != null && RawParamData != null)
                         {
+                            CurrentParamJSON = RawParamData;
+                            ExportParamJSONButton.IsEnabled = true;
+
                             var NewPS5Game = new PS5Game();
                             if (ParamData.TitleId != null)
                             {
